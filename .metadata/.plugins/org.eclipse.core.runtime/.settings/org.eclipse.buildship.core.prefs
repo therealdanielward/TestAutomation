@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+gradle.build.scans=false
+gradle.distribution=GRADLE_DISTRIBUTION(WRAPPER)
+gradle.offline.mode=false
+gradle.user.home=C\:\\Tests Workspace

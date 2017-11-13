@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename field &apos;menu&apos; in &apos;chrome.webdriver.hoopers.pageLoad&apos; to &apos;itemsToClick&apos;&#x0D;&#x0A;- Original project: &apos;Hoopers&apos;&#x0D;&#x0A;- Original element: &apos;chrome.webdriver.hoopers.pageLoad.menu&apos;&#x0D;&#x0A;- Renamed element: &apos;chrome.webdriver.hoopers.pageLoad.itemsToClick&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" delegate="false" deprecate="false" description="Rename field &apos;menu&apos;" flags="589830" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src&lt;chrome.webdriver.hoopers{pageLoad.java[pageLoad^menu" name="itemsToClick" references="true" setter="false" stamp="1509447901403" textual="false" version="1.0"/>
+</session>

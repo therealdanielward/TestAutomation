@@ -1,0 +1,120 @@
+package chrome.webdriver.hoopers;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+
+
+
+
+
+
+public class pageLoad
+	{
+		//Google requirements
+		String googleSpreadSheetId_hoopers = "1qXNIKiDnQEt5DpkbEFKmCBZ-kll7_g-v1ApilGhTCIU";
+
+		
+		//Main menu//Array of Menu 1
+		String[] menu = {"Home","Specials","New","Demo","MasterCars","Used Cars","Parts","Service"};
+
+		
+
+
+		WebDriver chrome;
+		JavascriptExecutor jse;
+		
+		// Browser setup
+		public void invokeBrowser()
+			{
+				try 
+				{
+				System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+				chrome = new ChromeDriver();
+				chrome.manage().deleteAllCookies();
+				chrome.manage().window().maximize();
+				chrome.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
+				chrome.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+				
+				chrome.get("http://www.hoopers.co.za/");
+				
+				checkMenu();//Calling of the menu 1 method
+				closeBrowser();//calling of the closebrowser method
+				
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		
+		@SuppressWarnings("deprecation")
+		public void checkMenu()
+		{
+			//count for menu errors
+			int count = 1;
+			
+			try
+				{
+					FileInputStream serviceAccount = new FileInputStream("C:\\Tests Workspace\\serviceAccountCredentials.json");
+					
+					FirebaseOptions = options = new FirebaseOptions.Builder()
+					
+				} catch (FileNotFoundException e)
+				{
+					e.printStackTrace();
+				}
+			
+			//Loop through the array of menu items
+			try {
+			for(int i = 0;i<menu.length;i++)
+				{
+					chrome.findElement(By.xpath("//*[text() ='"+menu[i]+"']")).click();
+					Thread.sleep(10000);
+					LogEntries le = chrome.manage().logs().get(LogType.BROWSER);
+					
+					//Logs the error entry from the browser console
+					for(LogEntry entry : le)
+						{
+							 
+							System.out.println(count + " " +entry.getTimestamp() + " " + chrome.getCurrentUrl() + " " + entry.getLevel() + " " + entry.getMessage());
+							count ++;
+						}
+					
+					chrome.navigate().back();
+					Thread.sleep(2000);
+					
+				}
+			}
+			catch(InterruptedException i)
+			{
+				i.printStackTrace();
+			}
+			
+		}
+		
+		//Closes browser
+		public void closeBrowser()
+		{
+			chrome.quit();
+		}
+		
+		
+		
+	public static void main(String[] args) // Main Method
+	{
+		pageLoad pl = new pageLoad();
+		pl.invokeBrowser();
+		
+		 
+	}
+		
+	}

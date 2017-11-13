@@ -1,0 +1,155 @@
+package chrome.webdriver.hoopers;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import android.support.v4.util.*;
+
+
+public class pageLoad
+	{
+
+		String websiteName = "Hoopers";
+
+		// Main menu//Array of Menu 1
+		String[] itemsToClick = { "Home", "Specials", "New", "Demo", "MasterCars", "Used Cars", "Parts", "Service" };
+		
+		String fileName = "";
+		
+		
+		
+		
+		//JSON Formatting
+		JSONObject jso = new JSONObject();
+		JSONObject jsoFinal = new JSONObject();
+		
+		//Firebase Database
+		public FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference ref = database.getReference("https://test-sheets-184213.firebaseio.com/");
+			
+		WebDriver chrome;
+		JavascriptExecutor jse;
+
+		// Browser setup
+		public void invokeBrowser()
+			{
+				try
+					{
+						System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+						chrome = new ChromeDriver();
+						chrome.manage().deleteAllCookies();
+						chrome.manage().window().maximize();
+						chrome.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+						chrome.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+
+						chrome.get("http://www.hoopers.co.za/");
+
+						checkMenu();// Calling of the menu 1 method
+						closeBrowser();// calling of the closebrowser method
+
+					} catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+
+			}
+
+		@SuppressWarnings("deprecation")
+		public void checkMenu()
+			{
+				// count for menu errors
+				int count = 1;
+				
+				// Loop through the array of menu items
+				try
+					{
+						for (int i = 0; i < itemsToClick.length; i++)
+							{
+								chrome.findElement(By.xpath("//*[text() ='" + itemsToClick[i] + "']")).click();
+								Thread.sleep(10000);
+								LogEntries le = chrome.manage().logs().get(LogType.BROWSER);
+
+								// Logs the error entry from the browser console
+								for (LogEntry entry : le)
+									{
+
+										try
+											{
+												String tempCount = Integer.toString(count);
+												jso.append(tempCount, entry.getTimestamp());
+												jso.append(tempCount, chrome.getCurrentUrl());
+												jso.append(tempCount, entry.getLevel());
+												jso.append(tempCount, entry.getMessage());
+											} catch (JSONException e)
+											{
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+
+										count++;
+									}
+								chrome.navigate().back();
+								Thread.sleep(2000);
+
+							}
+						try
+							{
+								jsoFinal.append(websiteName, jso);
+								//Adds json file to firebase database
+								ref.setValue(jsoFinal);
+							} catch (JSONException e)
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+					} catch (InterruptedException i)
+					{
+						i.printStackTrace();
+					}
+				// Write Json to Textfile
+				try (FileWriter file = new FileWriter("C:\\Tests Workspace\\Hoopers\\Hoopers_Errors.json"))
+					{
+						File f = new File("C:\\Tests Workspace\\Json Folders\\"+websiteName+".json");
+						f.delete();
+						f.createNewFile();
+						file.write(jsoFinal.toString());
+					} catch (IOException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				System.out.println("Successfully Copied JSON Object to File...");
+				System.out.println("\nJSON Object: " + jsoFinal);
+			}
+
+		// Closes browser
+		public void closeBrowser()
+			{
+				chrome.quit();
+			}
+		// Main Method
+		public static void main(String[] args) 
+			{
+
+				pageLoad pl = new pageLoad();
+				pl.invokeBrowser();
+
+			}
+
+	}

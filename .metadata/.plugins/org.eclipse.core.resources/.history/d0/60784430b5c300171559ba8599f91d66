@@ -1,0 +1,185 @@
+package chrome.webdriver.hoopers;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+
+
+
+
+/*This Test case is very simple but will give you all errors
+ * on the page currently on the time of load
+ * and lists them into a nested json file
+ * All is required is that you enter a -website name- and
+ * for you to enter all clickable links*/
+
+
+
+public class pageLoad
+	{
+		/*******************************************Details Required for Test**********************************************/
+
+		//Name of Client
+		String websiteName = "Hoopers";
+		//CLient Log Table
+		String logtable = "tbl_ErrorLog_Hoopers";
+		//Text of the element you want the code to click on
+		String[] itemsToClick = { "Home", "Specials"/*, "New", "Demo", "MasterCars", "Used Cars", "Parts", "Service", "087 358 9699 ", "Our Blog"
+				,"About Hoopers", "Motoring News", "Finance", "Customer Reviews", "Test Drive", "Passenger Vehicles", "Commercial Vehicles"*/ };
+		//Website URL
+		String siteUrl = "http://www.hoopers.co.za/";
+		//Location of Selenium webdriver .exe
+		String seleniumWebdriverLocation = "C:\\chromedriver.exe";
+			
+		/***********************************************************************************************************/
+		
+		ArrayList<String> timeStamp = new ArrayList<String>();
+		ArrayList<String> url = new ArrayList<String>();
+		ArrayList<String> statusLevel = new ArrayList<String>();
+		ArrayList<String> errorMessage = new ArrayList<String>();
+		
+		
+		//Connect to database
+		String urldb = "mssql6.gear.host";
+		String username = "testerrorsreport";
+		String password = "Rf99!Gp80K!t";
+		String dbName = "testerrorsreport";
+		
+		public Connection connectToDb()
+			{
+
+				Connection connection = null;
+				String URLConnection;
+
+				try
+				{
+					Class.forName("net.sourceforge.jtds.jdbc.Driver");
+					URLConnection = "jdbc:jtds:sqlserver://"+urldb+";"+dbName+";user="+username+";password="+password+";";
+					connection = DriverManager.getConnection(URLConnection);
+				}
+
+				catch (ClassNotFoundException e)
+				{
+					e.printStackTrace();
+				}
+
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+
+				return connection;
+			}
+		
+		//Webdriver for chrome	
+		WebDriver chrome;
+		//Used to run Javascript funtions eg: Scrolling
+		JavascriptExecutor jse;
+
+		// Browser setup
+		public void invokeBrowser()
+			{
+				try
+					{
+						System.setProperty("webdriver.chrome.driver", seleniumWebdriverLocation);
+						chrome = new ChromeDriver();
+						chrome.manage().deleteAllCookies();
+						chrome.manage().window().maximize();
+						chrome.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+						chrome.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
+
+						chrome.get(siteUrl);
+
+						
+					} catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+
+			}
+
+		//Checks your list created
+		public void checkMenu()
+			{
+				// Loop through the array of menu items
+				try
+					{
+						for (int i = 0; i < itemsToClick.length; i++)
+							{
+								chrome.findElement(By.xpath("//*[text() ='" + itemsToClick[i] + "']")).click();
+								Thread.sleep(11000);
+								LogEntries le = chrome.manage().logs().get(LogType.BROWSER);
+
+								// Logs the error entry from the browser console
+								for (LogEntry entry : le)
+									{
+
+										Long tempTime = entry.getTimestamp();
+										Level tempLevel = entry.getLevel();
+										String tempMessage = entry.getMessage();
+										String firstReplace = tempMessage.replaceAll("\"", " ");
+										String tempMessageFinal = firstReplace.replaceAll("'", " ");
+										
+										timeStamp.add(tempTime.toString());
+										url.add(chrome.getCurrentUrl().toString());
+										statusLevel.add(tempLevel.toString());
+										errorMessage.add(tempMessageFinal);
+									}
+								chrome.navigate().back();
+								Thread.sleep(2000);
+
+							}
+						
+						//Connecting to DB and then and updating errors in tables
+						Connection con = connectToDb();
+						Statement s = con.createStatement();
+						s.execute("DELETE FROM "+logtable+"");
+						
+						for(int i = 0;i<timeStamp.size();i++)
+							{
+								String query = "INSERT INTO "+logtable+"(Timestamp, URL, StatusLevel, ErrorMessage) VALUES ('"+timeStamp.get(i)+"', '"+url.get(i)+"', '"+statusLevel.get(i)+"', '"+errorMessage.get(i)+"'); ";
+								s.executeUpdate(query);
+							}
+						
+						
+						
+					
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		// Closes browser
+		public void closeBrowser()
+
+			{
+				chrome.quit();
+			}
+		
+		// Main Method
+		public static void main(String[] args) 
+			{
+
+				pageLoad pl = new pageLoad();
+				pl.invokeBrowser();
+				pl.checkMenu();// Calling of the menu 1 method
+				pl.closeBrowser();// calling of the closebrowser method
+
+
+			}
+
+	}

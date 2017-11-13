@@ -1,0 +1,180 @@
+package chrome.webdriver.hoopers;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
+
+/*This Test case is very simple but will give you all errors
+ * on the page currently on the time of load
+ * and lists them into a nested json file
+ * All is required is that you enter a -website name- and
+ * for you to enter all clickable links*/
+
+
+
+public class pageLoad
+	{
+		/*******************************************Details Required for Test**********************************************/
+
+		//Name of Client
+		String websiteName = "Hoopers";
+		//Text of the element you want the code to click on
+		String[] itemsToClick = { "Home", "Specials", "New", "Demo", "MasterCars", "Used Cars", "Parts", "Service", "087 358 9699 ", "Our Blog"
+				,"About Hoopers", "Motoring News", "Finance", "Customer Reviews", "Test Drive", "Passenger Vehicles", "Commercial Vehicles" };
+		//Website URL
+		String siteUrl = "http://www.hoopers.co.za/";
+		//Location of Selenium webdriver .exe
+		String seleniumWebdriverLocation = "C:\\chromedriver.exe";
+			
+		/***********************************************************************************************************/
+		
+		ArrayList<String> timeStamp = new ArrayList<String>();
+		ArrayList<String> url = new ArrayList<String>();
+		ArrayList<String> statusLevel = new ArrayList<String>();
+		ArrayList<String> errorMessage = new ArrayList<String>();
+		
+		
+		//JSON Formatting
+		JSONObject jso = new JSONObject();
+		JSONObject jsoFinal = new JSONObject();
+		
+		//Webdriver for chrome	
+		WebDriver chrome;
+		//Used to run Javascript funtions eg: Scrolling
+		JavascriptExecutor jse;
+
+		// Browser setup
+		public void invokeBrowser()
+			{
+				try
+					{
+						System.setProperty("webdriver.chrome.driver", seleniumWebdriverLocation);
+						chrome = new ChromeDriver();
+						chrome.manage().deleteAllCookies();
+						chrome.manage().window().maximize();
+						chrome.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+						chrome.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
+
+						chrome.get(siteUrl);
+
+						
+					} catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+
+			}
+
+		//Checks your list created
+		@SuppressWarnings("deprecation")
+		public void checkMenu()
+			{
+				// count for menu errors
+				int count = 1;
+				
+				// Loop through the array of menu items
+				try
+					{
+						for (int i = 0; i < itemsToClick.length; i++)
+							{
+								chrome.findElement(By.xpath("//*[text() ='" + itemsToClick[i] + "']")).click();
+								Thread.sleep(11000);
+								LogEntries le = chrome.manage().logs().get(LogType.BROWSER);
+
+								// Logs the error entry from the browser console
+								for (LogEntry entry : le)
+									{
+
+										try
+											{
+												String tempCount = Integer.toString(count);
+												jso.append(tempCount, entry.getTimestamp());
+												jso.append(tempCount, chrome.getCurrentUrl());
+												jso.append(tempCount, entry.getLevel());
+												jso.append(tempCount, entry.getMessage());
+											} catch (JSONException e)
+											{
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+
+										count++;
+									}
+								chrome.navigate().back();
+								Thread.sleep(2000);
+
+							}
+						try
+							{
+								jsoFinal.append(websiteName, jso);
+
+							} catch (JSONException e)
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+					} catch (InterruptedException i)
+					{
+						i.printStackTrace();
+					}
+				// Write Json to Textfile
+				try (FileWriter file = new FileWriter("C:\\Tests Workspace\\Json Folders\\"+websiteName+".json"))
+					{
+						//Beautifies the Json before putting it into the file
+						Gson gson = new GsonBuilder().setPrettyPrinting().create();
+						JsonParser jp = new JsonParser();
+						JsonElement je = jp.parse(jsoFinal.toString());
+						String jsonBeautified = gson.toJson(je);
+						//Creates new file for json
+						File f = new File("C:\\Tests Workspace\\Json Folders\\"+websiteName+".json");
+						f.delete();
+						f.createNewFile();
+						file.write(jsonBeautified);
+					} catch (IOException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				System.out.println("Successfully Copied JSON Object to File...");
+				System.out.println("\nJSON Object: " + jsoFinal);
+			}
+
+		// Closes browser
+		public void closeBrowser()
+
+			{
+				chrome.quit();
+			}
+		
+		// Main Method
+		public static void main(String[] args) 
+			{
+
+				pageLoad pl = new pageLoad();
+				pl.invokeBrowser();
+				pl.checkMenu();// Calling of the menu 1 method
+				pl.closeBrowser();// calling of the closebrowser method
+
+
+			}
+
+	}

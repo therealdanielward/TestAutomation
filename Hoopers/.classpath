@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Selenium/libs/byte-buddy-1.7.5.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/libs/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/libs/commons-exec-1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/libs/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/libs/gson-2.8.0.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/libs/guava-23.0.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/libs/httpclient-4.5.3.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/libs/httpcore-4.4.6.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/libs/jna-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/libs/jna-platform-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/client-combined-3.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/client-combined-3.6.0-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/selenium-server-standalone-3.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/gdata-java-client-master/java/lib/gdata-appsforyourdomain-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/gdata-java-client-master/java/lib/gdata-base-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/gdata-java-client-master/java/lib/gdata-calendar-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/gdata-java-client-master/java/lib/gdata-client-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/gdata-java-client-master/java/lib/gdata-codesearch-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/gdata-java-client-master/java/lib/gdata-photos-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/gdata-java-client-master/java/lib/gdata-spreadsheet-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/gdata-java-client-master/java/lib/com.google.gdata.feature_1.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-analytics-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-analytics-impl-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-appindexing-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-auth-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-common-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-config-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-crash-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-database-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-database-connection-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-dynamic-links-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-iid-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-messaging-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-perf-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-storage-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/firebase/firebase-storage-common-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-ads-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-ads-lite-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-analytics-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-analytics-impl-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-appinvite-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-auth-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-auth-api-phone-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-auth-base-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-awareness-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-base-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-basement-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-cast-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-cast-framework-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-clearcut-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-drive-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-fitness-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-games-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-gass-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-gcm-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-identity-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-iid-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-instantapps-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-location-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-maps-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-nearby-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-oss-licenses-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-panorama-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-places-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-plus-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-safetynet-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-tagmanager-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-tagmanager-api-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-tagmanager-v4-impl-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-tasks-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-vision-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-vision-common-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-wallet-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/Google-Play-Firebase-jars-master/Version 11.0.2/google_play/play-services-wearable-11.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="C:/Tests Workspace/jtds-1.3.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

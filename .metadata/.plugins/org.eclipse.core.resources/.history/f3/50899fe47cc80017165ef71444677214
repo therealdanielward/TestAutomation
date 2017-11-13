@@ -47,8 +47,8 @@ public class pageLoad
 
 		// Connect credentials to database
 		String urldb = "ixsql.c29.co.za";
-		String username = "Daniel";
-		String password = "!MonkeyBalls$";
+		String username = "P4Core";
+		String password = "p4c0r3!";
 		String dbName = "Testers";
 
 		/********************************************
@@ -250,7 +250,8 @@ public class pageLoad
 				//Catches a bad connection/ or bad query
 				catch (SQLException e1)
 					{
-						System.out.println("Connection to database unavailable/or couldnt run query/or table already exists");
+						System.out.println("Connection to database unavailable/or couldnt run query...");
+						e1.printStackTrace();
 					}
 				
 			}

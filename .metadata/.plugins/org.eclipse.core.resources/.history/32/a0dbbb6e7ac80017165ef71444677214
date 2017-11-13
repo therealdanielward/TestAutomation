@@ -250,7 +250,8 @@ public class pageLoad
 				//Catches a bad connection/ or bad query
 				catch (SQLException e1)
 					{
-						System.out.println("Connection to database unavailable/or couldnt run query/or table already exists");
+						System.out.println("Connection to database unavailable/or couldnt run query...");
+						e1.printStackTrace();
 					}
 				
 			}

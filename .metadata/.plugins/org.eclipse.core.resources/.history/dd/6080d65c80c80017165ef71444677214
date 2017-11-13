@@ -251,6 +251,7 @@ public class pageLoad
 				catch (SQLException e1)
 					{
 						System.out.println("Connection to database unavailable/or couldnt run query/or table already exists");
+						e1.printStackTrace();
 					}
 				
 			}

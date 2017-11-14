@@ -244,7 +244,7 @@ public class pageLoad
 				try
 					{
 						s = createTableCon.createStatement();
-						s.execute("USE Testers Create table "+logtable+"(CompleteDate DateTime,URL varchar(MAX),StatusLevel varchar(MAX),ErrorMessage varchar(MAX))");
+						s.execute("USE Testers Create table "+logtable+"(CompleteDate varchar(MAX),URL varchar(MAX),StatusLevel varchar(MAX),ErrorMessage varchar(MAX))");
 						System.out.println("Table Created...");
 					} 
 				//Catches a bad connection/ or bad query
@@ -271,16 +271,16 @@ public class pageLoad
 				pl.createTable();		
 										/*Creates a table if the table doesnt exist already*/
 				
-				//pl.invokeBrowser(); 
+				pl.invokeBrowser(); 
 										/* Calls the method invokeBrowser() which sets up the setting for the browser */
 
-				//pl.getSitemapLinks(); 
+				pl.getSitemapLinks(); 
 										/*
 										 * Calling of the getSitemapLinks() method - Opens up the sitemap url and gets
 										 * all the links from from the web elements for the processArrayList() method
 										 */
 
-				//pl.processArrayList(); 
+				pl.processArrayList(); 
 										 /*
 										 * Calling of the processArrayList() method - This runs through the list of
 										 * urls, Uses Selenium to go to them in the browser and gets the browser log for

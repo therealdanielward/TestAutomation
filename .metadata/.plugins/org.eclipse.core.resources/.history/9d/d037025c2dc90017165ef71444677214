@@ -191,8 +191,8 @@ public class pageLoad
 						// Sending INSERT query to the database
 						for (int i = 0; i < timeStamp.size(); i++)
 							{
-								String query = "INSERT INTO "+logtable
-										+ "(CompleteDate, URL, StatusLevel, ErrorMessage) VALUES ('" + timeStamp.get(i)
+								String query = "INSERT INTO " + logtable
+										+ "(Timestamp, URL, StatusLevel, ErrorMessage) VALUES ('" + timeStamp.get(i)
 										+ "', '" + url.get(i) + "', '" + statusLevel.get(i) + "', '"
 										+ errorMessage.get(i) + "'); ";
 								s.executeUpdate(query);
@@ -271,16 +271,16 @@ public class pageLoad
 				pl.createTable();		
 										/*Creates a table if the table doesnt exist already*/
 				
-				//pl.invokeBrowser(); 
+				pl.invokeBrowser(); 
 										/* Calls the method invokeBrowser() which sets up the setting for the browser */
 
-				//pl.getSitemapLinks(); 
+				pl.getSitemapLinks(); 
 										/*
 										 * Calling of the getSitemapLinks() method - Opens up the sitemap url and gets
 										 * all the links from from the web elements for the processArrayList() method
 										 */
 
-				//pl.processArrayList(); 
+				pl.processArrayList(); 
 										 /*
 										 * Calling of the processArrayList() method - This runs through the list of
 										 * urls, Uses Selenium to go to them in the browser and gets the browser log for

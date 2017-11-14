@@ -186,13 +186,13 @@ public class pageLoad
 						// Connecting to DB and then and updating errors in tables
 						Connection con = connectToDb();
 						Statement s = con.createStatement();
-						s.execute("DELETE FROM "+logtable);
+						s.execute("DELETE FROM " + logtable + "");
 
 						// Sending INSERT query to the database
 						for (int i = 0; i < timeStamp.size(); i++)
 							{
-								String query = "INSERT INTO "+logtable
-										+ "(CompleteDate, URL, StatusLevel, ErrorMessage) VALUES ('" + timeStamp.get(i)
+								String query = "INSERT INTO " + logtable
+										+ "(Timestamp, URL, StatusLevel, ErrorMessage) VALUES ('" + timeStamp.get(i)
 										+ "', '" + url.get(i) + "', '" + statusLevel.get(i) + "', '"
 										+ errorMessage.get(i) + "'); ";
 								s.executeUpdate(query);

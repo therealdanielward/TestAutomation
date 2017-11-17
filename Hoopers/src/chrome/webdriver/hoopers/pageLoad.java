@@ -68,7 +68,7 @@ public class pageLoad
 		JavascriptExecutor jse;
 
 		/*********************************************/
-		
+
 		// Connection for DB
 		public Connection connectToDb()
 			{
@@ -97,6 +97,7 @@ public class pageLoad
 				return connection;
 			}
 
+
 		// Browser setup
 		public void invokeBrowser()
 			{
@@ -118,6 +119,7 @@ public class pageLoad
 
 			}
 
+
 		// Checks your list created
 		public void processArrayList()
 			{
@@ -126,7 +128,7 @@ public class pageLoad
 				// Loop through the array of menu items
 				try
 					{
-						
+
 						//Loops until the end of the URLS
 						for (int i = 0; i < urlFromSitemap.size(); i++)
 							{
@@ -135,7 +137,7 @@ public class pageLoad
 
 								// Logs the error entry from the browser console
 								LogEntries le = chrome.manage().logs().get(LogType.BROWSER);
-								
+
 								//Loops through entries to get information and stores them in the ArrayLists
 								for (LogEntry entry : le)
 									{
@@ -155,24 +157,24 @@ public class pageLoad
 								Thread.sleep(2000);
 
 							}
-						
+
 						//Time when task finished
 						long endTime = System.currentTimeMillis();
 						//Total runtime of task
 						long totalRuntime = endTime - startTime;
-						
-						//Formats time 
-						String timeFormatted = String.format("%d min, %d sec", 
+
+						//Formats time
+						String timeFormatted = String.format("%d min, %d sec",
 							    TimeUnit.MILLISECONDS.toMinutes(totalRuntime),
-							    TimeUnit.MILLISECONDS.toSeconds(totalRuntime) - 
+							    TimeUnit.MILLISECONDS.toSeconds(totalRuntime) -
 							    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(totalRuntime))
 							);
-						
+
 						//get current date
 						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 						Date date = new Date();
 						System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
-						
+
 						//Prints to a textfile in the folder the time taken
 						PrintWriter writer = new PrintWriter(runTimeName+"_Runtime.txt", "UTF-8");
 						writer.println("Date:");
@@ -180,7 +182,7 @@ public class pageLoad
 						writer.println("Time:");
 						writer.println(timeFormatted);
 						writer.close();
-						
+
 						closeBrowser();// calling of the closebrowser method
 
 						// Connecting to DB and then and updating errors in tables
@@ -228,8 +230,7 @@ public class pageLoad
 			}
 
 		//Create Table
-		public void createTable()
-		{
+		public void createTable(){
 			Connection createTableCon = connectToDb();
 			//Trys to find table
 			try {
@@ -246,41 +247,41 @@ public class pageLoad
 						s = createTableCon.createStatement();
 						s.execute("USE Testers Create table "+logtable+"(CompleteDate varchar(MAX),URL varchar(MAX),StatusLevel varchar(MAX),ErrorMessage varchar(MAX))");
 						System.out.println("Table Created...");
-					} 
+					}
 				//Catches a bad connection/ or bad query
 				catch (SQLException e1)
 					{
 						System.out.println("Connection to database unavailable/or couldnt run query/or table already exists");
 					}
-				
+
 			}
 		}
-		
+
 		// Main Method
 		public static void main(String[] args)
 			{
 
 				pageLoad pl = new pageLoad();
-				
+
 				System.out.println("*Starting Error report for: "+runTimeName+
 									"\n*With URL: "+siteUrl+
 									"\n*AND Table: "+logtable+"\n");
-				
+
 				System.out.println("*Please ensure the chrome driver is setup correct, it is currently setup under:\n*"+seleniumWebdriverLocation);
-				
-				pl.createTable();		
+
+				pl.createTable();
 										/*Creates a table if the table doesnt exist already*/
-				
-				pl.invokeBrowser(); 
+
+				pl.invokeBrowser();
 										/* Calls the method invokeBrowser() which sets up the setting for the browser */
 
-				pl.getSitemapLinks(); 
+				pl.getSitemapLinks();
 										/*
 										 * Calling of the getSitemapLinks() method - Opens up the sitemap url and gets
 										 * all the links from from the web elements for the processArrayList() method
 										 */
 
-				pl.processArrayList(); 
+				pl.processArrayList();
 										 /*
 										 * Calling of the processArrayList() method - This runs through the list of
 										 * urls, Uses Selenium to go to them in the browser and gets the browser log for

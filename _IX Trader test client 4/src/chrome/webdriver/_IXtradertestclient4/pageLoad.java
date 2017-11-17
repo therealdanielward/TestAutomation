@@ -1,9 +1,8 @@
-package chrome.webdriver.hoopers;
+package chrome.webdriver._IXtradertestclient4;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
@@ -35,22 +34,22 @@ public class pageLoad
 		 * Details Required for Test
 		 *******************************************/
 		// CLient Log Table
-		String logtable = "tbl_ErrorLog_Hoopers";
+		public static String logtable = "tbl_ErrorLog_IXTradertestclient4";
 		// Website URL
-		String siteUrl = "http://cargofleet.ix.co.za/";
+		public static String siteUrl = "http://cargofleet.ix.co.za/";
 		//Name for Runtimefile
-		String runTimeName = "Hoopers";
+		public static String runTimeName = "IXTradertestclient4";
 
 		/*******************************************/
 
 		// Location of Selenium webdriver.exe
-		String seleniumWebdriverLocation = "C:\\chromedriver.exe";
+		public static String seleniumWebdriverLocation = "C:\\chromedriver.exe";
 
 		// Connect credentials to database
-		String urldb = "mssql6.gear.host";
-		String username = "testerrorsreport";
-		String password = "Rf99!Gp80K!t";
-		String dbName = "testerrorsreport";
+		String urldb = "ixqa.c29.co.za";
+		String username = "Daniel";
+		String password = "!MonkeyBalls$";
+		String dbName = "Testers";
 
 		/********************************************
 		 * DECLARATIONS
@@ -69,6 +68,7 @@ public class pageLoad
 		JavascriptExecutor jse;
 
 		/*********************************************/
+		
 		// Connection for DB
 		public Connection connectToDb()
 			{
@@ -162,12 +162,22 @@ public class pageLoad
 						long totalRuntime = endTime - startTime;
 						
 						//Formats time 
-						DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
-						String timeFormatted = formatter.format(totalRuntime);
+						String timeFormatted = String.format("%d min, %d sec", 
+							    TimeUnit.MILLISECONDS.toMinutes(totalRuntime),
+							    TimeUnit.MILLISECONDS.toSeconds(totalRuntime) - 
+							    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(totalRuntime))
+							);
+						
+						//get current date
+						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+						Date date = new Date();
+						System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
 						
 						//Prints to a textfile in the folder the time taken
 						PrintWriter writer = new PrintWriter(runTimeName+"_Runtime.txt", "UTF-8");
-						writer.println("Time(Ms)");
+						writer.println("Date:");
+						writer.println(date);
+						writer.println("Time:");
 						writer.println(timeFormatted);
 						writer.close();
 						
@@ -176,12 +186,12 @@ public class pageLoad
 						// Connecting to DB and then and updating errors in tables
 						Connection con = connectToDb();
 						Statement s = con.createStatement();
-						s.execute("DELETE FROM " + logtable + "");
+						s.execute("DELETE FROM "+logtable);
 
 						// Sending INSERT query to the database
 						for (int i = 0; i < timeStamp.size(); i++)
 							{
-								String query = "INSERT INTO " + logtable
+								String query = "INSERT INTO "+logtable
 										+ "(CompleteDate, URL, StatusLevel, ErrorMessage) VALUES ('" + timeStamp.get(i)
 										+ "', '" + url.get(i) + "', '" + statusLevel.get(i) + "', '"
 										+ errorMessage.get(i) + "'); ";
@@ -217,23 +227,66 @@ public class pageLoad
 				chrome.quit();
 			}
 
+		//Create Table
+		public void createTable()
+		{
+			Connection createTableCon = connectToDb();
+			//Trys to find table
+			try {
+			Statement s = createTableCon.createStatement();
+			s.executeQuery("SELECT * FROM "+logtable);
+			System.out.println("Table Found...");
+			}
+			//Catches an error if table doesnt exist then creates the table
+			catch (Exception e)
+			{
+				Statement s;
+				try
+					{
+						s = createTableCon.createStatement();
+						s.execute("USE Testers Create table "+logtable+"(CompleteDate varchar(MAX),URL varchar(MAX),StatusLevel varchar(MAX),ErrorMessage varchar(MAX))");
+						System.out.println("Table Created...");
+					} 
+				//Catches a bad connection/ or bad query
+				catch (SQLException e1)
+					{
+						System.out.println("Connection to database unavailable/or couldnt run query/or table already exists");
+					}
+				
+			}
+		}
+		
 		// Main Method
 		public static void main(String[] args)
 			{
 
 				pageLoad pl = new pageLoad();
-				pl.invokeBrowser(); /* Calls the method invokeBrowser() which sets up the setting for the browser */
+				
+				System.out.println("*Starting Error report for: "+runTimeName+
+									"\n*With URL: "+siteUrl+
+									"\n*AND Table: "+logtable+"\n");
+				
+				System.out.println("*Please ensure the chrome driver is setup correct, it is currently setup under:\n*"+seleniumWebdriverLocation);
+				
+				pl.createTable();		
+										/*Creates a table if the table doesnt exist already*/
+				
+				pl.invokeBrowser(); 
+										/* Calls the method invokeBrowser() which sets up the setting for the browser */
 
-				pl.getSitemapLinks(); /*
+				pl.getSitemapLinks(); 
+										/*
 										 * Calling of the getSitemapLinks() method - Opens up the sitemap url and gets
 										 * all the links from from the web elements for the processArrayList() method
 										 */
 
-				pl.processArrayList(); /*
+				pl.processArrayList(); 
+										 /*
 										 * Calling of the processArrayList() method - This runs through the list of
 										 * urls, Uses Selenium to go to them in the browser and gets the browser log for
 										 * that page then queries the database to update the rows with the errors
 										 */
+				System.out.println("*Completed Error Report for: "+runTimeName+"...\n\n");
 
 			}
 

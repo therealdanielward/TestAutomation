@@ -47,8 +47,8 @@ public class pageLoad
 
 		// Connect credentials to database
 		String urldb = "ixsql.c29.co.za";
-		String username = "Daniel";
-		String password = "!MonkeyBalls$";
+		String username = "P4Core";
+		String password = "p4c0r3!";
 		String dbName = "Testers";
 
 		/********************************************

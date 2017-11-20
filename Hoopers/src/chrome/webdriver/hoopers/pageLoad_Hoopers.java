@@ -46,10 +46,10 @@ public class pageLoad
 		public static String seleniumWebdriverLocation = "C:\\chromedriver.exe";
 
 		// Connect credentials to database
-		String urldb = "ixsql.c29.co.za";
-		String username = "P4Core";
-		String password = "p4c0r3!";
-		String dbName = "Testers";
+		String urldb = "";
+		String username = "";
+		String password = "";
+		String dbName = "";
 
 		/********************************************
 		 * DECLARATIONS

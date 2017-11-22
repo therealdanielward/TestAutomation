@@ -83,10 +83,6 @@ public class pageLoadCore
 		// Connection for DB
 		public Connection connectToDb()
 			{
-      		System.out.println("*Starting Error report for: "+clientName+
-								"\n*With URL: "+siteUrl+
-							"\n*AND Table: "+logtable+"\n");
-			System.out.println("*Please ensure the chrome driver is setup correct, it is currently setup under:\n*"+seleniumWebdriverLocation);
 
 				Connection connection = null;
 				String URLConnection;
@@ -246,6 +242,12 @@ public class pageLoadCore
 
 		//Create Table
 		public void createTable(){
+      
+              System.out.println("*Starting Error report for: "+clientName+
+								"\n*With URL: "+siteUrl+
+							"\n*AND Table: "+logtable+"\n");
+			System.out.println("*Please ensure the chrome driver is setup correct, it is currently setup under:\n*"+seleniumWebdriverLocation);
+      
 			Connection createTableCon = connectToDb();
 			//Trys to find table
 			try {

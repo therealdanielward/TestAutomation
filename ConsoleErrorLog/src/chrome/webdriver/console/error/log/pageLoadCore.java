@@ -27,257 +27,254 @@ import org.openqa.selenium.logging.LogType;
  * and lists them into a database connection of your choosing
  * All is required is that you enter the details required for the test below
  * and for you to enter all clickable links*/
-
 public class pageLoadCore
-	{
-		/*******************************************
-		 * Details Required for Test
-		 *******************************************/
-  
-  public void setURL(String url)
-   {
-     this.siteUrl=url;
-   }
-  
-  public void setClient(String client)
-   {
-     this.clientName=client;
-     this.logtable= "tbl_ErrorLog_"+clientName;
-   }
-        
-         public  String siteUrl;
-         public  String clientName;
-		public String logtable;
-		/*******************************************/
+  {
 
-		// Location of Selenium webdriver.exe
-		public static String seleniumWebdriverLocation = "C:\\chromedriver.exe";
+public void setURL(String url)
+  {
+    siteUrl = url;
+  }
 
-		// Connect credentials to database
-		String urldb = "";
-         String username = "";
-         String password = "";
-         String dbName = "";
+public void setClient(String client)
+  {
+    clientName = client;
+    logtable = "tbl_ErrorLog_" + clientName;
+  }
 
-		/********************************************
-		 * DECLARATIONS
-		 ********************************************/
+public String siteUrl;
+public String clientName;
+public String logtable;
+/**
+ * ****************************************
+ */
 
-		// ArrayLists for storing data
-		ArrayList<String> urlFromSitemap = new ArrayList<String>();
-		ArrayList<String> timeStamp = new ArrayList<String>();
-		ArrayList<String> url = new ArrayList<String>();
-		ArrayList<String> statusLevel = new ArrayList<String>();
-		ArrayList<String> errorMessage = new ArrayList<String>();
+// Location of Selenium webdriver.exe
+public static String seleniumWebdriverLocation = "C:\\chromedriver.exe";
 
-		// Webdriver for chrome
-		WebDriver chrome;
-		// Used to run Javascript funtions eg: Scrolling
-		JavascriptExecutor jse;
+// Connect credentials to database
+String urldb = "";
+String username = "";
+String password = "!";
+String dbName = "";
 
-		
-		
-		
-		/*********************************************/
+/**
+ * ******************************************
+ * DECLARATIONS ******************************************
+ */
+// ArrayLists for storing data
+ArrayList<String> urlFromSitemap = new ArrayList<>();
+ArrayList<String> timeStamp = new ArrayList<>();
+ArrayList<String> url = new ArrayList<>();
+ArrayList<String> statusLevel = new ArrayList<>();
+ArrayList<String> errorMessage = new ArrayList<>();
 
-		// Connection for DB
-		public Connection connectToDb()
-			{
+// Webdriver for chrome
+WebDriver chrome;
+// Used to run Javascript funtions eg: Scrolling
+JavascriptExecutor jse;
 
-				Connection connection = null;
-				String URLConnection;
+/**
+ * ******************************************
+ * @return
+ */
+// Connection for DB
+public Connection connectToDb()
+  {
 
-				try
-					{
-						Class.forName("net.sourceforge.jtds.jdbc.Driver");
-						URLConnection = "jdbc:jtds:sqlserver://" + urldb + ";" + dbName + ";user=" + username
-								+ ";password=" + password + ";";
-						connection = DriverManager.getConnection(URLConnection);
-					}
+    Connection connection = null;
+    String URLConnection;
 
-				catch (ClassNotFoundException e)
-					{
-						e.printStackTrace();
-					}
+    try
+      {
+        Class.forName("net.sourceforge.jtds.jdbc.Driver");
+        URLConnection = "jdbc:jtds:sqlserver://" + urldb + ";" + dbName + ";user=" + username
+                + ";password=" + password + ";";
+        connection = DriverManager.getConnection(URLConnection);
+      } catch (ClassNotFoundException e)
+      {
+        e.printStackTrace();
+      } catch (SQLException e)
+      {
+        e.printStackTrace();
+      }
 
-				catch (SQLException e)
-					{
-						e.printStackTrace();
-					}
+    return connection;
+  }
 
-				return connection;
-			}
+// Browser setup
+public void invokeBrowser()
+  {
+    try
+      {
+        System.setProperty("webdriver.chrome.driver", seleniumWebdriverLocation);
+        chrome = new ChromeDriver();
+        chrome.manage().deleteAllCookies();
+        chrome.manage().window().maximize();
+        chrome.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+        chrome.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
 
+        chrome.get(siteUrl + "/sitemap.xml");
 
-		// Browser setup
-		public void invokeBrowser()
-			{
-				try
-					{
-						System.setProperty("webdriver.chrome.driver", seleniumWebdriverLocation);
-						chrome = new ChromeDriver();
-						chrome.manage().deleteAllCookies();
-						chrome.manage().window().maximize();
-						chrome.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
-						chrome.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
+      } catch (Exception e)
+      {
+        e.printStackTrace();
+      }
 
-						chrome.get(siteUrl + "/sitemap.xml");
+  }
 
-					} catch (Exception e)
-					{
-						e.printStackTrace();
-					}
+// Checks your list created
+public void processArrayList()
+  {
+    //Clears all Arraylists so data doesnt pile up
+    timeStamp.clear();
+    url.clear();
+    statusLevel.clear();
+    errorMessage.clear();
+    //Get Start Time
+    long startTime = System.currentTimeMillis();
+    // Loop through the array of menu items
+    try
+      {
 
-			}
+        //Loops until the end of the URLS
+        for (int i = 0; i < urlFromSitemap.size(); i++)
+          {
+            System.out.println("**" + i + " of " + urlFromSitemap.size());
+            chrome.get(urlFromSitemap.get(i));
+            Thread.sleep(11000);
 
+            // Logs the error entry from the browser console
+            LogEntries le = chrome.manage().logs().get(LogType.BROWSER);
 
-		// Checks your list created
-		public void processArrayList()
-			{
-				//Get Start Time
-				long startTime = System.currentTimeMillis();
-				// Loop through the array of menu items
-				try
-					{
+            //Loops through entries to get information and stores them in the ArrayLists
+            for (LogEntry entry : le)
+              {
 
-						//Loops until the end of the URLS
-						for (int i = 0; i < urlFromSitemap.size(); i++)
-							{
-								chrome.get(urlFromSitemap.get(i));
-								Thread.sleep(11000);
+                String tempTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(entry.getTimestamp()));
+                Level tempLevel = entry.getLevel();
+                String tempMessage = entry.getMessage();
+                String firstReplace = tempMessage.replaceAll("\"", " ");
+                String tempMessageFinal = firstReplace.replaceAll("'", " ");
 
-								// Logs the error entry from the browser console
-								LogEntries le = chrome.manage().logs().get(LogType.BROWSER);
+                timeStamp.add(tempTime.toString());
+                url.add(chrome.getCurrentUrl().toString());
+                statusLevel.add(tempLevel.toString());
+                errorMessage.add(tempMessageFinal);
+              }
+            //chrome.navigate().back();
+            //Thread.sleep(2000);
 
-								//Loops through entries to get information and stores them in the ArrayLists
-								for (LogEntry entry : le)
-									{
+          }
 
-										String tempTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(entry.getTimestamp()));
-										Level tempLevel = entry.getLevel();
-										String tempMessage = entry.getMessage();
-										String firstReplace = tempMessage.replaceAll("\"", " ");
-										String tempMessageFinal = firstReplace.replaceAll("'", " ");
+        //Time when task finished
+        long endTime = System.currentTimeMillis();
+        //Total runtime of task
+        long totalRuntime = endTime - startTime;
 
-										timeStamp.add(tempTime.toString());
-										url.add(chrome.getCurrentUrl().toString());
-										statusLevel.add(tempLevel.toString());
-										errorMessage.add(tempMessageFinal);
-									}
-								//chrome.navigate().back();
-								//Thread.sleep(2000);
+        //Formats time
+        String timeFormatted = String.format("%d min, %d sec",
+                TimeUnit.MILLISECONDS.toMinutes(totalRuntime),
+                TimeUnit.MILLISECONDS.toSeconds(totalRuntime)
+                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(totalRuntime))
+        );
 
-							}
+        //get current date
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date));
 
-						//Time when task finished
-						long endTime = System.currentTimeMillis();
-						//Total runtime of task
-						long totalRuntime = endTime - startTime;
+        //Prints to a textfile in the folder the time taken
+        PrintWriter writer = new PrintWriter(clientName + "_Runtime.txt", "UTF-8");
+        writer.println("Date:");
+        writer.println(date);
+        writer.println("Time:");
+        writer.println(timeFormatted);
+        writer.close();
 
-						//Formats time
-						String timeFormatted = String.format("%d min, %d sec",
-							    TimeUnit.MILLISECONDS.toMinutes(totalRuntime),
-							    TimeUnit.MILLISECONDS.toSeconds(totalRuntime) -
-							    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(totalRuntime))
-							);
+        closeBrowser();// calling of the closebrowser method
 
-						//get current date
-						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-						Date date = new Date();
-						System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
+        // Connecting to DB and then and updating errors in tables
+        Connection con = connectToDb();
+        Statement s = con.createStatement();
+        s.executeUpdate("USE Testers DELETE FROM " + logtable);
 
-						//Prints to a textfile in the folder the time taken
-						PrintWriter writer = new PrintWriter(clientName+"_Runtime.txt", "UTF-8");
-						writer.println("Date:");
-						writer.println(date);
-						writer.println("Time:");
-						writer.println(timeFormatted);
-						writer.close();
+        // Sending INSERT query to the database
+        for (int i = 0; i < timeStamp.size(); i++)
+          {
+            String query = "USE Testers INSERT INTO " + logtable
+                    + "(CompleteDate, URL, StatusLevel, ErrorMessage) VALUES ('" + timeStamp.get(i)
+                    + "', '" + url.get(i) + "', '" + statusLevel.get(i) + "', '"
+                    + errorMessage.get(i) + "'); ";
+            s.executeUpdate(query);
+          }
 
-						closeBrowser();// calling of the closebrowser method
+      } catch (Exception e)
+      {
+        e.printStackTrace();
+      }
+    System.out.println("*Completed Error Report for: " + clientName + "...\n\n");
+  }
 
-						// Connecting to DB and then and updating errors in tables
-						Connection con = connectToDb();
-						Statement s = con.createStatement();
-						s.executeUpdate("USE Testers DELETE FROM "+logtable);
-                          
-						// Sending INSERT query to the database
-						for (int i = 0; i < timeStamp.size(); i++)
-							{
-								String query = "USE Testers INSERT INTO "+logtable
-										+ "(CompleteDate, URL, StatusLevel, ErrorMessage) VALUES ('" + timeStamp.get(i)
-										+ "', '" + url.get(i) + "', '" + statusLevel.get(i) + "', '"
-										+ errorMessage.get(i) + "'); ";
-								s.executeUpdate(query);
-							}
+// Testing all links for sitemap
+public void getSitemapLinks()
+  {
+    //Clears arrayList from previous URL Sitemap Links
+    urlFromSitemap.clear();
+    // get all links from page
+    List<WebElement> links = chrome.findElements(By.tagName("span"));
+    for (WebElement link : links)
+      {
+        if (link.getText().contains(siteUrl))
+          {
+            urlFromSitemap.add(link.getText());
+          }
+      }
+  }
 
-					} catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-                System.out.println("*Completed Error Report for: "+clientName+"...\n\n");
-			}
+// Closes browser
+public void closeBrowser()
 
-		// Testing all links for sitemap
-		public void getSitemapLinks()
-			{
+  {
+    chrome.quit();
+  }
 
-				// get all links from page
-				List<WebElement> links = chrome.findElements(By.tagName("span"));
-				for (WebElement link : links)
-					{
-						if (link.getText().contains(siteUrl))
-							{
-								urlFromSitemap.add(link.getText());
-							}
-					}
-			}
+//Create Table
+public void createTable()
+  {
 
-		// Closes browser
-		public void closeBrowser()
+    System.out.println("*Starting Error report for: " + clientName
+            + "\n*With URL: " + siteUrl
+            + "\n*AND Table: " + logtable + "\n");
+    System.out.println("*Please ensure the chrome driver is setup correct, it is currently setup under:\n*" + seleniumWebdriverLocation);
 
-			{
-				chrome.quit();
-			}
+    Connection createTableCon = connectToDb();
+    //Trys to find table
+    try
+      {
+        Statement s = createTableCon.createStatement();
+        s.executeQuery("SELECT TOP 10 [CompleteDate],[URL],[StatusLevel],[ErrorMessage] FROM [Testers].[dbo].[" + logtable + "]");
+        System.out.println("Table Found...");
+      } //Catches an error if table doesnt exist then creates the table
+    catch (Exception e)
+      {
+        Statement s;
+        try
+          {
+            s = createTableCon.createStatement();
+            s.execute("USE Testers Create table " + logtable + "(CompleteDate varchar(MAX),URL varchar(MAX),StatusLevel varchar(MAX),ErrorMessage varchar(MAX))");
+            System.out.println("Table Created...");
+          } //Catches a bad connection/ or bad query
+        catch (SQLException e1)
+          {
+            System.out.println("****" + e1.getMessage());
+          }
 
-		//Create Table
-		public void createTable(){
-      
-              System.out.println("*Starting Error report for: "+clientName+
-								"\n*With URL: "+siteUrl+
-							"\n*AND Table: "+logtable+"\n");
-			System.out.println("*Please ensure the chrome driver is setup correct, it is currently setup under:\n*"+seleniumWebdriverLocation);
-      
-			Connection createTableCon = connectToDb();
-			//Trys to find table
-			try {
-			Statement s = createTableCon.createStatement();
-			s.executeQuery("SELECT * FROM "+logtable);
-			System.out.println("Table Found...");
-			}
-			//Catches an error if table doesnt exist then creates the table
-			catch (Exception e)
-			{
-				Statement s;
-				try
-					{
-						s = createTableCon.createStatement();
-						s.execute("USE Testers Create table "+logtable+"(CompleteDate varchar(MAX),URL varchar(MAX),StatusLevel varchar(MAX),ErrorMessage varchar(MAX))");
-						System.out.println("Table Created...");
-					}
-				//Catches a bad connection/ or bad query
-				catch (SQLException e1)
-					{
-						System.out.println("Connection to database unavailable/couldnt run query/or table already exists");
-					}
+      }
+  }
 
-			}
-		}
-
-		// Main Method
+// Main Method
 //		public static void main(String[] args)
 //			{ 
-
 //				pageLoadCore pl = new pageLoadCore();
 //
 //
@@ -301,5 +298,4 @@ public class pageLoadCore
 //										 */
 //
 //			}
-
-	}
+  }

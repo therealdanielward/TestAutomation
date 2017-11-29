@@ -49,7 +49,7 @@ public String logtable;
  */
 
 // Location of Selenium webdriver.exe
-public static String seleniumWebdriverLocation = "C:\\chromedriver.exe";
+public static String seleniumWebdriverLocation = "\\chromedriver.exe";
 
 // Connect credentials to database
 String urldb = "";
@@ -110,8 +110,8 @@ public void invokeBrowser()
         chrome = new ChromeDriver();
         chrome.manage().deleteAllCookies();
         chrome.manage().window().maximize();
-        chrome.manage().timeouts().implicitlyWait(240, TimeUnit.SECONDS);
-        chrome.manage().timeouts().pageLoadTimeout(240, TimeUnit.SECONDS);
+        chrome.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
+        chrome.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
 
         chrome.get(siteUrl + "/sitemap.xml");
 
@@ -139,7 +139,7 @@ public void processArrayList()
         //Loops until the end of the URLS
         for (int i = 0; i < urlFromSitemap.size(); i++)
           {
-            System.out.println("**" + i + " of " + urlFromSitemap.size());
+            System.out.println("**" + (i+1) + " of " + urlFromSitemap.size());
             chrome.get(urlFromSitemap.get(i));
             Thread.sleep(11000);
 

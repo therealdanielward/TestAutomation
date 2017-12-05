@@ -1,11 +1,16 @@
 package run.all.clients;
 
 import chrome.webdriver.console.error.log.pageLoadCore;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class runAllClients
  {
@@ -39,7 +44,7 @@ public static void main(String[] args)
 	 {
 		for (int i = 0; r.next(); i++)
 		 {
-			clientName.add(r.getString("clientName").replaceAll(" ", "").replaceAll("-", "_").replaceAll("&", "And"));
+			clientName.add(r.getString("clientName").replaceAll(" ", "").replaceAll("-", "_").replaceAll("&", "And").replaceAll("/", ""));
 			// Added a Replaceall for blank spaces for when it creates the table names
 			URL.add(r.getString("acuURL"));
 		 }
@@ -57,11 +62,20 @@ public static void main(String[] args)
 
 		plc.setURL("http://" + url);
 		plc.setClient(client);
-		plc.createTable();
 		plc.invokeBrowser();
 		plc.getSitemapLinks();
+                plc.createTable();
 		plc.processArrayList();
 	 }
+        
+    try 
+    {
+        PrintStream consoleOutput = new PrintStream(new FileOutputStream("ConsoleLog.txt"));
+        System.setOut(consoleOutput);
+        
+    } catch (FileNotFoundException ex) {
+        ex.printStackTrace();
+    }
  }
 
  }

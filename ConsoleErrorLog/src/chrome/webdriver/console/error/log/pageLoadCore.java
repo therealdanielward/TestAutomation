@@ -54,7 +54,7 @@ public static String seleniumWebdriverLocation = "\\chromedriver.exe";
 // Connect credentials to database
 String urldb = "";
 String username = "";
-String password = "";
+String password = "!";
 String dbName = "";
 
 /**
@@ -224,11 +224,18 @@ public void getSitemapLinks()
     List<WebElement> links = chrome.findElements(By.tagName("span"));
     for (WebElement link : links)
       {
-        if (link.getText().contains(siteUrl))
+        if (link.getText().contains(siteUrl)||link.getText().replaceAll("www.", "").contains(siteUrl))
           {
             urlFromSitemap.add(link.getText());
           }
       }
+    
+    if(links.isEmpty())
+    {
+        closeBrowser();
+        System.out.println("No sitemap links available!");
+    }
+    
   }
 
 // Closes browser

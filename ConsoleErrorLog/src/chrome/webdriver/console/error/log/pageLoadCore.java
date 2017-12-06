@@ -112,8 +112,12 @@ public void invokeBrowser()
         chrome.manage().window().maximize();
         chrome.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
         chrome.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
-
+        chrome.manage().timeouts().setScriptTimeout(120, TimeUnit.SECONDS);
         chrome.get(siteUrl + "/sitemap.xml");
+        
+        Thread.sleep(2000);
+        
+        siteUrl = chrome.getCurrentUrl().replaceAll("/sitemap.aspx", "").replaceAll("/sitemap.xml", "");
 
       } catch (Exception e)
       {
@@ -216,26 +220,56 @@ public void processArrayList()
   }
 
 // Testing all links for sitemap
-public void getSitemapLinks()
+public void getSitemapLinks() 
   {
+   try
+    {
     //Clears arrayList from previous URL Sitemap Links
     urlFromSitemap.clear();
     // get all links from page
+    
+    //For Type One of the sitemap structure
     List<WebElement> links = chrome.findElements(By.tagName("span"));
     for (WebElement link : links)
       {
-        if (link.getText().contains(siteUrl)||link.getText().replaceAll("www.", "").contains(siteUrl))
+          String tempLinkOne = link.getText();
+          
+        if (tempLinkOne.contains(siteUrl)||tempLinkOne.contains(siteUrl.replaceAll("www.", "")))
           {
             urlFromSitemap.add(link.getText());
           }
       }
     
-    if(links.isEmpty())
+    
+    //For Type Two of the sitemap structure
+    if(urlFromSitemap.size() < 1)
+    {
+    List<WebElement> linksTwo = chrome.findElements(By.tagName("loc"));
+    for (WebElement link2 : linksTwo)
+      {
+          String tempLinkOne = link2.getText();
+          
+        if (tempLinkOne.contains(siteUrl)||tempLinkOne.contains(siteUrl.replaceAll("www.", "")))
+          {
+            urlFromSitemap.add(link2.getText());
+          }  
+    }
+    }
+    //If no links found in the urlFromSitemap arraylist then close browser
+     if(urlFromSitemap.size() < 1)
     {
         closeBrowser();
         System.out.println("No sitemap links available!");
     }
     
+    
+    
+  }
+      catch(Exception e)
+            {
+            System.out.println(e);
+            closeBrowser();
+            }
   }
 
 // Closes browser

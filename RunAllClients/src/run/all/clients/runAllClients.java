@@ -54,7 +54,7 @@ public static void main(String[] args)
 	 }
 
 	//For loop to run through all the URLs and adds them to the pageLoadCore to run through
-	for (int i = 0; i <= URL.size(); i++)//Can change the integer starting increment to do different clients
+	for (int i = 257; i <= URL.size(); i++)//Can change the integer starting increment to do different clients
 	 {
                         System.out.println("Client number "+(i+1)+" of "+URL.size());
 		String url = URL.get(i);
@@ -74,7 +74,7 @@ public static void main(String[] args)
         System.setOut(consoleOutput);
         
     } catch (FileNotFoundException ex) {
-        ex.printStackTrace();
+        System.out.println("ErrorMessage: "+ex);
     }
  }
 

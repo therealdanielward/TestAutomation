@@ -15,6 +15,7 @@ import java.util.logging.Level;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -52,10 +53,6 @@ public String logtable;
 public static String seleniumWebdriverLocation = "\\chromedriver.exe";
 
 // Connect credentials to database
-String urldb = "";
-String username = "";
-String password = "!";
-String dbName = "";
 
 /**
  * ******************************************
@@ -106,10 +103,12 @@ public void invokeBrowser()
   {
     try
       {
+          Point point = new Point(-2000,0);
+          
         System.setProperty("webdriver.chrome.driver", seleniumWebdriverLocation);
         chrome = new ChromeDriver();
         chrome.manage().deleteAllCookies();
-        chrome.manage().window().maximize();
+        chrome.manage().window().setPosition(point);
         chrome.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
         chrome.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
         chrome.manage().timeouts().setScriptTimeout(120, TimeUnit.SECONDS);

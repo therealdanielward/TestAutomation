@@ -46,7 +46,7 @@ public static void main(String[] args)
 		 {
 			clientName.add(r.getString("clientName").replaceAll(" ", "").replaceAll("-", "_").replaceAll("&", "And").replaceAll("/", ""));
 			// Added a Replaceall for blank spaces for when it creates the table names
-			URL.add(r.getString("acuURL"));
+			URL.add(r.getString("acuURL").replaceAll("www.", ""));
 		 }
 	 } catch (SQLException ex)
 	 {
@@ -64,7 +64,11 @@ public static void main(String[] args)
 		plc.setClient(client);
 		plc.invokeBrowser();
 		plc.getSitemapLinks();
+<<<<<<< HEAD
                 plc.createTable();
+=======
+                                    plc.createTable();
+>>>>>>> origin/Change_Database_Queries
 		plc.processArrayList();
 	 }
         

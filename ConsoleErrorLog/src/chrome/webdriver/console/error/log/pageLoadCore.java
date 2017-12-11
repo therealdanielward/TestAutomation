@@ -49,13 +49,9 @@ public String logtable;
  */
 
 // Location of Selenium webdriver.exe
-public static String seleniumWebdriverLocation = "\\chromedriver.exe";
+public static String seleniumWebdriverLocation = "C:\\chromedriver.exe";
 
 // Connect credentials to database
-String urldb = "";
-String username = "";
-String password = "";
-String dbName = "";
 
 /**
  * ******************************************
@@ -184,12 +180,19 @@ public void processArrayList()
         System.out.println(dateFormat.format(date));
 
         //Prints to a textfile in the folder the time taken
+        try
+          {
         PrintWriter writer = new PrintWriter(clientName + "_Runtime.txt", "UTF-8");
         writer.println("Date:");
         writer.println(date);
         writer.println("Time:");
         writer.println(timeFormatted);
         writer.close();
+          }
+        catch(Exception e)
+                {
+                  e.printStackTrace();
+                }
 
         closeBrowser();// calling of the closebrowser method
 
@@ -224,7 +227,7 @@ public void getSitemapLinks()
     List<WebElement> links = chrome.findElements(By.tagName("span"));
     for (WebElement link : links)
       {
-        if (link.getText().contains(siteUrl))
+        if (link.getText().contains(siteUrl) || link.getText().contains("http://" +siteUrl))
           {
             urlFromSitemap.add(link.getText());
           }
@@ -252,7 +255,7 @@ public void createTable()
     try
       {
         Statement s = createTableCon.createStatement();
-        s.executeQuery("SELECT TOP 10 [CompleteDate],[URL],[StatusLevel],[ErrorMessage] FROM [Testers].[dbo].[" + logtable + "]");
+        s.executeQuery("SELECT TOP 10 [ID],[CompleteDate],[URL],[StatusLevel],[ErrorMessage] FROM [Testers].[dbo].[" + logtable + "]");
         System.out.println("Table Found...");
       } //Catches an error if table doesnt exist then creates the table
     catch (Exception e)
@@ -261,7 +264,7 @@ public void createTable()
         try
           {
             s = createTableCon.createStatement();
-            s.execute("USE Testers Create table " + logtable + "(CompleteDate varchar(MAX),URL varchar(MAX),StatusLevel varchar(MAX),ErrorMessage varchar(MAX))");
+            s.execute("USE Testers Create table " + logtable + "(ID int IDENTITY(1,1) PRIMARY KEY,CompleteDate varchar(MAX),URL varchar(MAX),StatusLevel varchar(MAX),ErrorMessage varchar(MAX))");
             System.out.println("Table Created...");
           } //Catches a bad connection/ or bad query
         catch (SQLException e1)

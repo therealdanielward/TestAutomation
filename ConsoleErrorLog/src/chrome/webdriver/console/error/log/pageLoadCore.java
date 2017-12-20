@@ -70,6 +70,13 @@ WebDriver chrome;
 // Used to run Javascript funtions eg: Scrolling
 JavascriptExecutor jse;
 
+
+String urldb = "ixsql.c29.co.za";
+String dbName = "Testers";
+String  username = "Daniel";
+String password = "!MonkeyBalls$";
+
+
 /**
  * ******************************************
  * @return
@@ -238,16 +245,13 @@ public void getSitemapLinks()
     List<WebElement> links = chrome.findElements(By.tagName("span"));
     for (WebElement link : links)
       {
-<<<<<<< HEAD
+
           String tempLinkOne = link.getText();
           
         if (tempLinkOne.contains(siteUrl)||tempLinkOne.contains(siteUrl.replaceAll("www.", "")))
-=======
-        if (link.getText().contains(siteUrl) || link.getText().contains("http://" +siteUrl))
->>>>>>> origin/Change_Database_Queries
-          {
+            {
             urlFromSitemap.add(link.getText());
-          }
+            }
       }
     
     

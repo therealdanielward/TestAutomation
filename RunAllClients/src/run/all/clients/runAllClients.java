@@ -44,17 +44,18 @@ public static void main(String[] args)
 	 {
 		for (int i = 0; r.next(); i++)
 		 {
-			clientName.add(r.getString("clientName").replaceAll(" ", "").replaceAll("-", "_").replaceAll("&", "And").replaceAll("/", ""));
+			clientName.add(r.getString("clientName").replaceAll(" ", "").replaceAll("-", "_").replaceAll("&", "And").replaceAll("/", "").replaceAll(".co.za", "").replaceAll(" ", "").replaceAll("[()]", ""));
 			// Added a Replaceall for blank spaces for when it creates the table names
 			URL.add(r.getString("acuURL").replaceAll("www.", ""));
 		 }
 	 } catch (SQLException ex)
 	 {
+        
 		ex.printStackTrace();
 	 }
 
 	//For loop to run through all the URLs and adds them to the pageLoadCore to run through
-	for (int i = 257; i <= URL.size(); i++)//Can change the integer starting increment to do different clients
+	for (int i = 0; i <= URL.size(); i++)//Can change the integer starting increment to do different clients
 	 {
                         System.out.println("Client number "+(i+1)+" of "+URL.size());
 		String url = URL.get(i);
@@ -64,11 +65,7 @@ public static void main(String[] args)
 		plc.setClient(client);
 		plc.invokeBrowser();
 		plc.getSitemapLinks();
-<<<<<<< HEAD
                 plc.createTable();
-=======
-                                    plc.createTable();
->>>>>>> origin/Change_Database_Queries
 		plc.processArrayList();
 	 }
         

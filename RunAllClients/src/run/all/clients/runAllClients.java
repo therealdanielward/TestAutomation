@@ -60,12 +60,10 @@ public static void main(String[] args)
                         System.out.println("Client number "+(i+1)+" of "+URL.size());
 		String url = URL.get(i);
 		String client = clientName.get(i);
-
 		plc.setURL("http://" + url);
 		plc.setClient(client);
 		plc.invokeBrowser();
 		plc.getSitemapLinks();
-                                    plc.createTable();
 		plc.processArrayList();
 	 }
         

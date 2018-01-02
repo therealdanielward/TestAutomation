@@ -53,7 +53,6 @@ public String logtable;
 public static String seleniumWebdriverLocation = "C:\\chromedriver.exe";
 
 // Connect credentials to database
-
 /**
  * ******************************************
  * DECLARATIONS ******************************************
@@ -70,12 +69,10 @@ WebDriver chrome;
 // Used to run Javascript funtions eg: Scrolling
 JavascriptExecutor jse;
 
-
 String urldb = "ixsql.c29.co.za";
 String dbName = "Testers";
-String  username = "Daniel";
+String username = "Daniel";
 String password = "!MonkeyBalls$";
-
 
 /**
  * ******************************************
@@ -110,8 +107,8 @@ public void invokeBrowser()
   {
     try
       {
-          Point point = new Point(-2000,0);
-          
+        Point point = new Point(-2000, 0);
+
         System.setProperty("webdriver.chrome.driver", seleniumWebdriverLocation);
         chrome = new ChromeDriver();
         chrome.manage().deleteAllCookies();
@@ -120,9 +117,9 @@ public void invokeBrowser()
         chrome.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
         chrome.manage().timeouts().setScriptTimeout(120, TimeUnit.SECONDS);
         chrome.get(siteUrl + "/sitemap.xml");
-        
+
         Thread.sleep(2000);
-        
+
         siteUrl = chrome.getCurrentUrl().replaceAll("/sitemap.aspx", "").replaceAll("/sitemap.xml", "");
 
       } catch (Exception e)
@@ -149,7 +146,7 @@ public void processArrayList()
         //Loops until the end of the URLS
         for (int i = 0; i < urlFromSitemap.size(); i++)
           {
-            System.out.println("**" + (i+1) + " of " + urlFromSitemap.size());
+            System.out.println("**" + (i + 1) + " of " + urlFromSitemap.size());
             chrome.get(urlFromSitemap.get(i));
             Thread.sleep(11000);
 
@@ -196,94 +193,103 @@ public void processArrayList()
         //Prints to a textfile in the folder the time taken
         try
           {
-        PrintWriter writer = new PrintWriter(clientName + "_Runtime.txt", "UTF-8");
-        writer.println("Date:");
-        writer.println(date);
-        writer.println("Time:");
-        writer.println(timeFormatted);
-        writer.close();
+            PrintWriter writer = new PrintWriter(clientName + "_Runtime.txt", "UTF-8");
+            writer.println("Date:");
+            writer.println(date);
+            writer.println("Time:");
+            writer.println(timeFormatted);
+            writer.close();
+          } catch (Exception e)
+          {
+            e.printStackTrace();
           }
-        catch(Exception e)
-                {
-                  e.printStackTrace();
-                }
 
         closeBrowser();// calling of the closebrowser method
 
-        // Connecting to DB and then and updating errors in tables
-        Connection con = connectToDb();
-        Statement s = con.createStatement();
-        s.executeUpdate("USE Testers DELETE FROM " + logtable);
-
-        // Sending INSERT query to the database
-        for (int i = 0; i < timeStamp.size(); i++)
+        if (timeStamp.size() > 0)
           {
-            String query = "USE Testers INSERT INTO " + logtable
-                    + "(CompleteDate, URL, StatusLevel, ErrorMessage) VALUES ('" + timeStamp.get(i)
-                    + "', '" + url.get(i) + "', '" + statusLevel.get(i) + "', '"
-                    + errorMessage.get(i) + "'); ";
-            s.executeUpdate(query);
-          }
+            try
+              {
+                createTable();
+                // Connecting to DB and then and updating errors in tables
+                Connection con = connectToDb();
+                Statement s = con.createStatement();
+                s.executeUpdate("USE Testers DELETE FROM " + logtable);
 
+                // Sending INSERT query to the database
+                for (int i = 0; i < timeStamp.size(); i++)
+                  {
+                    String query = "USE Testers INSERT INTO " + logtable
+                            + "(CompleteDate, URL, StatusLevel, ErrorMessage) VALUES ('" + timeStamp.get(i)
+                            + "', '" + url.get(i) + "', '" + statusLevel.get(i) + "', '"
+                            + errorMessage.get(i) + "'); ";
+                    s.executeUpdate(query);
+                  }
+
+              } catch (Exception e)
+              {
+                e.printStackTrace();
+              }
+            System.out.println("*Completed Error Report for: " + clientName + "...\n\n");
+          } else
+          {
+            System.out.println("*No errors on client");
+          }
       } catch (Exception e)
       {
         e.printStackTrace();
       }
-    System.out.println("*Completed Error Report for: " + clientName + "...\n\n");
+
   }
 
 // Testing all links for sitemap
-public void getSitemapLinks() 
+public void getSitemapLinks()
   {
-   try
-    {
-    //Clears arrayList from previous URL Sitemap Links
-    urlFromSitemap.clear();
-    // get all links from page
-    
-    //For Type One of the sitemap structure
-    List<WebElement> links = chrome.findElements(By.tagName("span"));
-    for (WebElement link : links)
+    try
       {
+        //Clears arrayList from previous URL Sitemap Links
+        urlFromSitemap.clear();
+        // get all links from page
 
-          String tempLinkOne = link.getText();
-          
-        if (tempLinkOne.contains(siteUrl)||tempLinkOne.contains(siteUrl.replaceAll("www.", "")))
-            {
-            urlFromSitemap.add(link.getText());
-            }
-      }
-    
-    
-    //For Type Two of the sitemap structure
-    if(urlFromSitemap.size() < 1)
-    {
-    List<WebElement> linksTwo = chrome.findElements(By.tagName("loc"));
-    for (WebElement link2 : linksTwo)
-      {
-          String tempLinkOne = link2.getText();
-          
-        if (tempLinkOne.contains(siteUrl)||tempLinkOne.contains(siteUrl.replaceAll("www.", "")))
+        //For Type One of the sitemap structure
+        List<WebElement> links = chrome.findElements(By.tagName("span"));
+        for (WebElement link : links)
           {
-            urlFromSitemap.add(link2.getText());
-          }  
-    }
-    }
-    //If no links found in the urlFromSitemap arraylist then close browser
-     if(urlFromSitemap.size() < 1)
-    {
-        closeBrowser();
-        System.out.println("No sitemap links available!");
-    }
-    
-    
-    
-  }
-      catch(Exception e)
-            {
-            System.out.println(e);
+
+            String tempLinkOne = link.getText();
+
+            if (tempLinkOne.contains(siteUrl) || tempLinkOne.contains(siteUrl.replaceAll("www.", "")))
+              {
+                urlFromSitemap.add(link.getText());
+              }
+          }
+
+        //For Type Two of the sitemap structure
+        if (urlFromSitemap.size() < 1)
+          {
+            List<WebElement> linksTwo = chrome.findElements(By.tagName("loc"));
+            for (WebElement link2 : linksTwo)
+              {
+                String tempLinkOne = link2.getText();
+
+                if (tempLinkOne.contains(siteUrl) || tempLinkOne.contains(siteUrl.replaceAll("www.", "")))
+                  {
+                    urlFromSitemap.add(link2.getText());
+                  }
+              }
+          }
+        //If no links found in the urlFromSitemap arraylist then close browser
+        if (urlFromSitemap.size() < 1)
+          {
             closeBrowser();
-            }
+            System.out.println("No sitemap links available!");
+          }
+
+      } catch (Exception e)
+      {
+        System.out.println(e);
+        closeBrowser();
+      }
   }
 
 // Closes browser

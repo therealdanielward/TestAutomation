@@ -32,7 +32,7 @@ public static void main(String[] args)
 	try
 	 {
 		s = c.createStatement();
-		r = s.executeQuery("Use Dealergateway SELECT [acuClientID], [acuURL], B.clientName FROM [AutoEngine].[dbo].[tbl_AdminClientURL] A,[AutoEngine].[dbo].[tbl_AdminClient] B where acuPriority = 1 and acuID in (select acuId from (SELECT distinct [acuClientID],min(acuId) as acuID FROM [AutoEngine].[dbo].[tbl_AdminClientURL] where acuPriority = 1 group by [acuClientID] ) u) AND A.acuClientID = B.clientID order by acuClientid");
+		r = s.executeQuery("USE Dealergateway SELECT [acuClientID], [acuURL], B.clientName FROM [AutoEngine].[dbo].[tbl_AdminClientURL] A, [AutoEngine].[dbo].[tbl_AdminClient] B WHERE acuPriority = 1 AND acuClientID IN (SELECT DISTINCT[pageClient] FROM [WebsiteEditor].[dbo].[tbl_WE_ContentPage] where pageDeleteDate IS NULL) AND acuID IN (SELECT acuId FROM (SELECT DISTINCT [acuClientID], min(acuId) AS acuID FROM [AutoEngine].[dbo].[tbl_AdminClientURL] WHERE acuPriority = 1 GROUP BY [acuClientID]) u) AND A.acuClientID = B.clientID ORDER BY acuClientid");
 
 	 } catch (SQLException ex)
 	 {
@@ -65,7 +65,7 @@ public static void main(String[] args)
 		plc.setClient(client);
 		plc.invokeBrowser();
 		plc.getSitemapLinks();
-                plc.createTable();
+                                    plc.createTable();
 		plc.processArrayList();
 	 }
         

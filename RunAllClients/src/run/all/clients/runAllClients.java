@@ -26,10 +26,14 @@ public static ArrayList<String> URL = new ArrayList<String>();
 
 public static ResultSet r;
 
-public static void main(String[] args) throws IOException
+public static void main(String[] args) 
   {
+    try
+      {
+    FileWriter fw;
 
-    FileWriter fw = new FileWriter("ConsoleLog.txt", true);
+        fw = new FileWriter("ConsoleLog.txt", true);
+     
     BufferedWriter bw = new BufferedWriter(fw);
     PrintWriter out = new PrintWriter(bw);
 
@@ -72,7 +76,7 @@ public static void main(String[] args) throws IOException
       }
 
     //For loop to run through all the URLs and adds them to the pageLoadCore to run through
-    for (int i = 200; i <= URL.size(); i++)//Can change the integer starting increment to do different clients
+    for (int i = 211; i <= URL.size(); i++)//Can change the integer starting increment to do different clients
       {
         System.out.println("***********" + clientName.get(i) + "************");
         System.out.println("Client number " + (i + 1) + " of " + URL.size());
@@ -90,7 +94,10 @@ public static void main(String[] args) throws IOException
         out.println(baos.toString());
         out.close();
       }
-
+ } catch (IOException ex)
+      {
+        ex.printStackTrace();
+      }
   }
 
   }

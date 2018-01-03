@@ -120,9 +120,9 @@ public void invokeBrowser()
         chrome = new ChromeDriver();
         chrome.manage().deleteAllCookies();
         chrome.manage().window().setPosition(point);
-        chrome.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
-        chrome.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
-        chrome.manage().timeouts().setScriptTimeout(120, TimeUnit.SECONDS);
+        chrome.manage().timeouts().implicitlyWait(480, TimeUnit.SECONDS);
+        chrome.manage().timeouts().pageLoadTimeout(480, TimeUnit.SECONDS);
+        chrome.manage().timeouts().setScriptTimeout(480, TimeUnit.SECONDS);
         chrome.get(siteUrl + "/sitemap.xml");
 
         Thread.sleep(2000);
@@ -246,7 +246,6 @@ public void processArrayList()
       {
         e.printStackTrace();
       }
-      
 
   }
 
